@@ -9,6 +9,11 @@ add_executable(${CMAKE_PROJECT_NAME}
 	src/EventHandler.cpp
 	src/Event.hpp
 	src/Event.cpp
+
 	src/ConcurrentQueue.hpp
+
+	src/events/DayNightEvent.cpp
+	src/events/ResponseEvent.cpp
+
 	src/main.cpp
 )
