@@ -19,6 +19,17 @@
 					"ignoreFailures": true
 				}
 			]
+		},
+		{
+			"name": "(Windows) Debug Launch",
+			"type": "cppvsdbg",
+			"request": "launch",
+			// Resolved by CMake Tools: 
+			"program": "${command:cmake.launchTargetPath}",
+			"args": [],
+			"stopAtEntry": false,
+			"cwd": "${workspaceFolder}",
+			"environment": [],
 		}
 	]
 }
