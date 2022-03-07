@@ -9,7 +9,6 @@ add_executable(${CMAKE_PROJECT_NAME}
 	src/EventHandler.cpp
 	src/Event.hpp
 	src/Event.cpp
-	src/SmartThread.hpp
 	src/ConcurrentQueue.hpp
 	src/main.cpp
 )
