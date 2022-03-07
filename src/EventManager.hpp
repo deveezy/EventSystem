@@ -1,9 +1,12 @@
 #pragma once
 #include <future>
+#include <map>
 #include <memory>
-#include <queue>
 #include <unordered_map>
+#include <utility>
+#include <vector>
 
+#include "ConcurrentQueue.hpp"
 #include "Event.hpp"
 
 class EventManager {
@@ -24,8 +27,8 @@ private:
   void processEvents();  // queue.pop blocked (producer/consumer)
 
 private:
-  std::unordered_map<EventType, std::unique_ptr<Event>> events_callbacks;
-  std::queue<EventType> events;
+  std::unordered_multimap<EventType, std::unique_ptr<Event>> event_actions;
+  ConcurrentQueue<EventType> events;
 
 private:
   std::future<void> handler;
