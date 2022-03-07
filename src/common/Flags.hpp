@@ -10,11 +10,11 @@ struct IsEnumFlags : public std::false_type {};
 
 //! Register a new enum-based flags macro
 #define ENUM_FLAGS(type)                        \
-  using common::operator&;                       \
-  using common::operator|;                       \
-  using common::operator^;                       \
-  namespace common {                             \
-  template <>                                    \
+  using common::operator&;                      \
+  using common::operator|;                      \
+  using common::operator^;                      \
+  namespace common {                            \
+  template <>                                   \
   struct IsEnumFlags<type> : std::true_type {}; \
   }
 
