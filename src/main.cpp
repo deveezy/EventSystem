@@ -1,8 +1,9 @@
 #include <cstdint>
 #include <functional>
 #include <iostream>
-#include <string>
 #include <map>
+#include <string>
+
 #include "EventHandler.hpp"
 
 // class Demo {
@@ -21,21 +22,23 @@
 //   }
 // };
 
-// void Pass(Demo _demo) { 
-// 	Demo demo = std::move(_demo); 
+// void Pass(Demo _demo) {
+// 	Demo demo = std::move(_demo);
 // }
 
-
-struct Base {};
-
-template <typename T>
-struct Derived : Base {
-
+struct Base {
+  void exec() { std::cout << "base\n"; }
 };
 
-int main() {
-  // Pass(Demo {});
-  std::map<int, Base *> m;
+struct Derived : Base {
+  void exec() { std::cout << "der\n"; }
+};
 
+void Pass(Base _base) {
+  _base.exec();
+}
+
+int main() {
+  Pass(Derived {});
   return 0;
 }
