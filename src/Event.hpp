@@ -6,7 +6,7 @@
 #include "EventHandler.hpp"
 #include "common/Flags.hpp"
 
-enum class EventType { TYPE_ONE = 1 << 0, TYPE_TWO = 1 << 1, TYPE_THREE = 1 << 2, COUNT };
+enum class EventType { RESPONSE = 1 << 0, TYPE_TWO = 1 << 1, TYPE_THREE = 1 << 2, COUNT };
 ENUM_FLAGS(EventType)
 
 class Event {

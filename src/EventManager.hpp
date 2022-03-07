@@ -14,14 +14,14 @@ public:
   EventManager();
   ~EventManager();
   EventManager(const EventManager &) noexcept = delete;
-  EventManager(EventManager &&) noexcept      = default;
+  EventManager(EventManager &&) noexcept      = delete;
   EventManager &operator=(const EventManager &) noexcept = delete;
-  EventManager &operator=(EventManager &&) noexcept = default;
+  EventManager &operator=(EventManager &&) noexcept = delete;
 
 public:
   /** Push to the queue **/
-  void Push(EventType _event_type);                                 // Call when the event occurred.
-  void Bind(EventType _event_type, std::unique_ptr<Event> _event);  // Call from UI.
+  void Push(EventType _event_type);  // Call when the event occurred.
+  void Bind(EventType _event_type, std::unique_ptr<Event> &&_event);  // Call from UI.
 
 private:
   void processEvents();  // queue.pop blocked (producer/consumer)
