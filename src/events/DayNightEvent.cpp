@@ -1,6 +1,7 @@
 #include "DayNightEvent.hpp"
+
 #include <iostream>
 
-void DayNightEvent::Execute() {
-	std::cout << "DayNight Event occurred\n";
-}
+DayNightEvent::DayNightEvent() : Event {ActionType::DAY_NIGNT, "DAYNIGHT"} {}
+
+void DayNightEvent::Execute() { std::cout << name << "\n"; }

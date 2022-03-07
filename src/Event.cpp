@@ -1,13 +1,13 @@
 #include "Event.hpp"
 
-Event::Event(EventType _type) : name {}, type {_type} {}
+Event::Event(ActionType _type) : name {}, action_type {_type} {}
 
-Event::Event(EventType _type, std::string _name) : name {std::move(_name)}, type {_type} {}
+Event::Event(ActionType _type, std::string _name) : name {std::move(_name)}, action_type {_type} {}
 
 void Event::SetName(std::string _name) { name = std::move(_name); }
 
 std::string Event::GetName() const { return name; }
 
-void Event::SetType(EventType _type) { type = _type; }
+void Event::SetType(ActionType _type) { action_type = _type; }
 
-common::Flags<EventType> Event::GetType() const { return type; }
+ActionType Event::GetType() const { return action_type; }

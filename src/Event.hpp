@@ -6,7 +6,8 @@
 #include "EventHandler.hpp"
 #include "common/Flags.hpp"
 
-enum class EventType { RESPONSE = 1 << 0, TYPE_TWO = 1 << 1, TYPE_THREE = 1 << 2, COUNT };
+enum class EventType { MOTION = 1 << 0, AUTO_FOCUS = 1 << 1, TEMPERATURE = 1 << 2, COUNT };
+enum class ActionType { RESPONSE, DAY_NIGNT, IR};
 ENUM_FLAGS(EventType)
 
 class Event {
@@ -14,8 +15,8 @@ class Event {
 
 public:
   Event() noexcept = default;
-  explicit Event(EventType _type);
-  Event(EventType _type, std::string _name);
+  explicit Event(ActionType _type);
+  Event(ActionType _type, std::string _name);
   Event(const Event &) noexcept = default;
   Event(Event &&) noexcept      = default;
   Event &operator=(const Event &) noexcept = default;
@@ -25,13 +26,13 @@ public:
 public:
   virtual void Execute() = 0;
 
-private:
+public:
   void SetName(std::string _name);
   std::string GetName() const;
-  void SetType(EventType _type);
-  common::Flags<EventType> GetType() const;
+  void SetType(ActionType _type);
+  ActionType GetType() const;
 
-private:
+protected:
   std::string name {};  // mb debug purpose
-  common::Flags<EventType> type {};
+  ActionType action_type {};
 };

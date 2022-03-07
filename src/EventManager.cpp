@@ -16,6 +16,10 @@ void EventManager::Bind(EventType _event_type, std::unique_ptr<Event> &&_event) 
   event_actions.emplace(_event_type, std::move(_event));
 }
 
+void EventManager::Unbind(EventType _event_type) {
+  
+}
+
 void EventManager::processEvents() {
   EventType event_type;
   std::cout << "Wait for event...\n";
@@ -26,4 +30,8 @@ void EventManager::processEvents() {
   for (const auto &element : event_actions) {
     if (element.first & event_type) { element.second->Execute(); }
   }
+}
+
+void EventManager::initEvents() {
+  // Get values from DB and push to event_actions map.
 }

@@ -22,9 +22,11 @@ public:
   /** Push to the queue **/
   void Push(EventType _event_type);  // Call when the event occurred.
   void Bind(EventType _event_type, std::unique_ptr<Event> &&_event);  // Call from UI.
+  void Unbind(EventType _event_type);
 
 private:
   void processEvents();  // queue.pop blocked (producer/consumer)
+  void initEvents();
 
 private:
   std::unordered_multimap<EventType, std::unique_ptr<Event>> event_actions;
