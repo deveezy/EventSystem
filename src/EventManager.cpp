@@ -27,19 +27,18 @@ void EventManager::Bind(Flags<EventType> _event_type, std::unique_ptr<Event> &&_
 }
 
 void EventManager::Exclude(uint32_t _id, Flags<EventType> _event_type) {
-  for (auto it = event_actions.cbegin(); it != event_actions.cend();) {
+  for (auto it = event_actions.begin(); it != event_actions.end();) {
     if (it->first == _id) {
       auto existed = it->second->GetEventType();
       existed &= (~_event_type);
       if (!existed) {
-        event_actions.erase(it++);
+        it = event_actions.erase(it);
+        continue;
       } else {
         it->second->SetEventType(existed);
-        ++it;
       }
-    } else {
-      ++it;
     }
+    ++it;
   }
 }
 
