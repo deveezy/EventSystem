@@ -27,8 +27,5 @@ int main() {
   em.Exclude(3, EventType::MOTION);
   em.Push(EventType::TEMPERATURE);
 #endif
-
-  // uint64_t db_idx = 1ull << (4 * 8);
-  // uint64_t val = 18446744073709551615u;
   return 0;
 }
