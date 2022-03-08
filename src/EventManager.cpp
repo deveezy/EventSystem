@@ -4,6 +4,9 @@
 
 #include <algorithm>
 #include <iostream>
+#include <utility>
+
+#include "events/DayNightEvent.hpp"
 
 // TODO: fake DB.
 static uint32_t id_counter = 3;
@@ -24,28 +27,33 @@ void EventManager::Bind(Flags<EventType> _event_type, std::unique_ptr<Event> &&_
 }
 
 void EventManager::Exclude(uint32_t _id, Flags<EventType> _event_type) {
-  for (auto &it : event_actions) {
-    if (it.first == _id) {
-      auto existed = it.second->GetEventType();
+  for (auto it = event_actions.cbegin(); it != event_actions.cend();) {
+    if (it->first == _id) {
+      auto existed = it->second->GetEventType();
       existed &= (~_event_type);
-      if (!existed) event_actions.erase(it.first);
-      else
-        it.second->SetEventType(existed);
+      if (!existed) {
+        event_actions.erase(it++);
+      } else {
+        it->second->SetEventType(existed);
+        ++it;
+      }
+    } else {
+      ++it;
     }
   }
 }
 
 void EventManager::processEvents() {
-  EventType event_type;
-  std::cout << "Wait for event...\n";
-  events.WaitAndPop(event_type);  // block
-  std::cout << "New event just arrived\n";
+  while (true) {
+    EventType event_type;
+    std::cout << "Wait for event...\n";
+    events.WaitAndPop(event_type);  // block
+    std::cout << "New event just arrived\n";
 
-  const auto comp = [&event_type](
-                        const auto &pair) { return pair.second->GetEventType() & event_type; };
-
-  const auto event_it = std::find_if(event_actions.begin(), event_actions.end(), comp);
-  if (event_it != event_actions.end()) event_it->second->Execute();
+    for (const auto &it : event_actions) {
+      if (it.second->GetEventType() & event_type) it.second->Execute();
+    }
+  }
 }
 
 void EventManager::initEvents() {
