@@ -3,20 +3,17 @@
 #include <bitset>
 #include <type_traits>
 
-namespace common {
 // Enum-based flags false checker
 template <typename TEnum>
 struct IsEnumFlags : public std::false_type {};
 
 //! Register a new enum-based flags macro
-#define ENUM_FLAGS(type)                        \
-  using common::operator&;                      \
-  using common::operator|;                      \
-  using common::operator^;                      \
-  namespace common {                            \
-  template <>                                   \
-  struct IsEnumFlags<type> : std::true_type {}; \
-  }
+#define ENUM_FLAGS(type)  \
+  using tools::operator&; \
+  using tools::operator|; \
+  using tools::operator^; \
+  template <>             \
+  struct IsEnumFlags<type> : std::true_type {};
 
 //! Enum-based flags
 /*!
@@ -124,6 +121,8 @@ private:
   Type value {0};
 };
 
+namespace tools {
+
 template <typename TEnum>
 inline void Swap(Flags<TEnum> &_flags1, Flags<TEnum> &_flags2) noexcept {
   _flags1.swap(_flags2);
@@ -147,4 +146,4 @@ constexpr auto operator^(TEnum _value1, TEnum _value2) noexcept
   return Flags<TEnum>(_value1) ^ _value2;
 }
 
-}  // namespace common
+}  // namespace tools
