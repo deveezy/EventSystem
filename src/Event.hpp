@@ -7,15 +7,14 @@
 #include "common/Flags.hpp"
 
 enum class EventType { MOTION = 1 << 0, AUTO_FOCUS = 1 << 1, TEMPERATURE = 1 << 2, COUNT };
-enum class ActionType { RESPONSE, DAY_NIGNT, IR};
+enum class ActionType { RESPONSE = 1, DAY_NIGNT, IR };
 ENUM_FLAGS(EventType)
+ENUM_FLAGS(ActionType)
 
 class Event {
-  using Type = std::make_unsigned_t<std::underlying_type_t<EventType>>;
-
 public:
   Event() noexcept = default;
-  explicit Event(ActionType _type);
+  Event(ActionType _action_type, EventType _event_type);
   Event(ActionType _type, std::string _name);
   Event(const Event &) noexcept = default;
   Event(Event &&) noexcept      = default;
@@ -29,10 +28,13 @@ public:
 public:
   void SetName(std::string _name);
   std::string GetName() const;
-  void SetType(ActionType _type);
-  ActionType GetType() const;
+  void SetActionType(ActionType _action_type);
+  Flags<ActionType> GetActionType() const;
+  void SetEventType(EventType _event_type);
+  Flags<EventType> GetEventType() const;
 
 protected:
   std::string name {};  // mb debug purpose
-  ActionType action_type {};
+  Flags<ActionType> action_type {};
+  Flags<EventType> event_type {};
 };
