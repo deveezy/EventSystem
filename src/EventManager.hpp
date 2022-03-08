@@ -1,10 +1,7 @@
 #pragma once
 #include <future>
-#include <map>
 #include <memory>
 #include <unordered_map>
-#include <utility>
-#include <vector>
 
 #include "ConcurrentQueue.hpp"
 #include "Event.hpp"
@@ -20,16 +17,17 @@ public:
 
 public:
   /** Push to the queue **/
-  void Push(EventType _event_type);  // Call when the event occurred.
-  void Bind(EventType _event_type, std::unique_ptr<Event> &&_event);  // Call from UI.
-  void Unbind(EventType _event_type);
+  void Push(Flags<EventType> _event_type);  // Call when the event occurred.
+  void Bind(Flags<EventType> _event_type, std::unique_ptr<Event> &&_event);  // Call from UI.
+  void Unbind(uint32_t _id, Flags<EventType>);                               // Call from UI.
+  void Exclude(uint32_t _id, Flags<EventType> _event_type);
 
 private:
   void processEvents();  // queue.pop blocked (producer/consumer)
   void initEvents();
 
 private:
-  std::unordered_multimap<EventType, std::unique_ptr<Event>> event_actions;
+  std::unordered_map<uint32_t, std::unique_ptr<Event>> event_actions;
   ConcurrentQueue<EventType> events;
 
 private:
