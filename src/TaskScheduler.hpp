@@ -2,12 +2,8 @@
 
 #include <ctime>
 #include <memory>
-
-#include "Event.hpp"
-
-class Task {
-
-};
+#include <unordered_map>
+#include "tasks/Task.hpp"
 
 class TaskScheduler {
 public:
@@ -19,7 +15,7 @@ public:
   TaskScheduler &operator=(TaskScheduler &&) noexcept = default;
 
 public:
-  void Schedule(int32_t _id, int32_t _time_begin, int32_t _time_end);
 
 private:
+  std::unordered_map<uint32_t, std::shared_ptr<Task>> tasks;
 };
