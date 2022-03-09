@@ -1,5 +1,5 @@
 #pragma once
-#include "../Event.hpp"
+#include "Event.hpp"
 
 class DayNightEvent : public Event {
 public:
@@ -13,8 +13,8 @@ public:
   void Execute() override;
 
 public:
-	void SetMode(Mode _mode);
-	Mode GetMode() const;
+  void SetMode(Mode _mode);
+  Mode GetMode() const;
 
 private:
   Mode mode;
