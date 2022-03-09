@@ -20,11 +20,13 @@ EventManager::~EventManager() = default;
 
 void EventManager::Push(Flags<EventType> _event_type) { events.TryPush(_event_type); }
 
-void EventManager::Bind(Flags<EventType> _event_type, std::unique_ptr<Event> &&_event) {
+void EventManager::Bind(Flags<EventType> _event_type, std::shared_ptr<Event> _event) {
   _event->SetEventType(_event_type);
   event_actions.emplace(id_counter, std::move(_event));
   ++id_counter;
 }
+
+void EventManager::Unbind(uint32_t _id, Flags<EventType> _event_type) { event_actions.erase(_id); }
 
 void EventManager::Exclude(uint32_t _id, Flags<EventType> _event_type) {
   for (auto it = event_actions.begin(); it != event_actions.end();) {

@@ -17,9 +17,9 @@ public:
 
 public:
   /** Push to the queue **/
-  void Push(Flags<EventType> _event_type);  // Call when the event occurred.
-  void Bind(Flags<EventType> _event_type, std::unique_ptr<Event> &&_event);  // Call from UI.
-  void Unbind(uint32_t _id, Flags<EventType>);                               // Call from UI.
+  void Push(Flags<EventType> _event_type);
+  void Bind(Flags<EventType> _event_type, std::shared_ptr<Event> _event);  // Call from UI.
+  void Unbind(uint32_t _id, Flags<EventType> _event_type);                 // Call from UI.
   void Exclude(uint32_t _id, Flags<EventType> _event_type);
 
 private:
@@ -27,7 +27,7 @@ private:
   void initEvents();
 
 private:
-  std::unordered_map<uint32_t, std::unique_ptr<Event>> event_actions;
+  std::unordered_map<uint32_t, std::shared_ptr<Event>> event_actions;
   ConcurrentQueue<EventType> events;
 
 private:
