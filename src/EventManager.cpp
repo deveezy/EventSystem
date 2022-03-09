@@ -7,7 +7,7 @@
 #include <memory>
 #include <utility>
 
-#include "Event.hpp"
+#include "events/Event.hpp"
 #include "events/DayNightEvent.hpp"
 #include "events/ResponseEvent.hpp"
 
@@ -21,7 +21,7 @@ EventManager::EventManager() : events {20} {
 
 EventManager::~EventManager() = default;
 
-void EventManager::Push(Flags<EventType> _event_type) { events.TryPush(_event_type); }
+void EventManager::Push(Flags<TriggerType> _event_type) { events.TryPush(_event_type); }
 
 std::shared_ptr<Event> EventManager::CreateEvent(ActionType _action_type) {
   std::shared_ptr<Event> event = nullptr;
@@ -34,24 +34,24 @@ std::shared_ptr<Event> EventManager::CreateEvent(ActionType _action_type) {
   return event;
 }
 
-void EventManager::Bind(Flags<EventType> _event_type, std::shared_ptr<Event> _event) {
-  _event->SetEventType(_event_type);
+void EventManager::Bind(Flags<TriggerType> _event_type, std::shared_ptr<Event> _event) {
+  _event->SetTriggerType(_event_type);
   event_actions.emplace(id_counter, _event);
   ++id_counter;
 }
 
-void EventManager::Unbind(uint32_t _id, Flags<EventType> _event_type) { event_actions.erase(_id); }
+void EventManager::Unbind(uint32_t _id, Flags<TriggerType> _event_type) { event_actions.erase(_id); }
 
-void EventManager::Exclude(uint32_t _id, Flags<EventType> _event_type) {
+void EventManager::Exclude(uint32_t _id, Flags<TriggerType> _event_type) {
   for (auto it = event_actions.begin(); it != event_actions.end();) {
     if (it->first == _id) {
-      auto existed = it->second->GetEventType();
+      auto existed = it->second->GetTriggerType();
       existed &= (~_event_type);
       if (!existed) {
         it = event_actions.erase(it);
         continue;
       } else {
-        it->second->SetEventType(existed);
+        it->second->SetTriggerType(existed);
       }
     }
     ++it;
@@ -60,13 +60,13 @@ void EventManager::Exclude(uint32_t _id, Flags<EventType> _event_type) {
 
 void EventManager::processEvents() {
   while (true) {
-    EventType event_type;
+    TriggerType event_type;
     std::cout << "Wait for event...\n";
     events.WaitAndPop(event_type);  // block
     std::cout << "New event just arrived\n";
 
     for (const auto &it : event_actions) {
-      if (it.second->GetEventType() & event_type) it.second->Execute();
+      if (it.second->GetTriggerType() & event_type) it.second->Execute();
     }
   }
 }
