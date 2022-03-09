@@ -28,6 +28,7 @@ private:
   void initEvents();
 
 private:
+  // NOTE: mb key will be Task class with id and info about time
   std::unordered_map<uint32_t, std::shared_ptr<Event>> event_actions;
   ConcurrentQueue<EventType> events;
 
