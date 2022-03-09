@@ -3,10 +3,12 @@ project(EventSystem)
 
 add_executable(${CMAKE_PROJECT_NAME} 
 	src/common/Flags.hpp
+
 	src/EventManager.hpp
 	src/EventManager.cpp
-	src/EventHandler.hpp
-	src/EventHandler.cpp
+	src/TaskScheduler.hpp
+	src/TaskScheduler.cpp
+
 	src/Event.hpp
 	src/Event.cpp
 
