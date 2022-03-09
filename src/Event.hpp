@@ -3,7 +3,6 @@
 #include <string>
 #include <type_traits>
 
-#include "EventHandler.hpp"
 #include "common/Flags.hpp"
 
 enum class EventType { MOTION = 1 << 0, AUTO_FOCUS = 1 << 1, TEMPERATURE = 1 << 2, COUNT };
