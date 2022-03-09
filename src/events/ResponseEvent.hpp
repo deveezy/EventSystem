@@ -4,6 +4,7 @@
 
 class ResponseEvent : public Event {
 public:
+  ResponseEvent();
   ResponseEvent(int32_t _demo_field);
   // TODO: pass parameters to form response.
 public:

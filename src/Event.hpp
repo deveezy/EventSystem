@@ -5,7 +5,13 @@
 
 #include "common/Flags.hpp"
 
-enum class EventType { MOTION = 1 << 0, AUTO_FOCUS = 1 << 1, TEMPERATURE = 1 << 2, COUNT };
+enum class EventType {
+  DETECTOR_NIGHT = 1 << 0,
+  DETECTOR_DAY   = 1 << 1,
+  MOTION         = 1 << 2,
+
+  COUNT
+};
 enum class ActionType { RESPONSE = 1, DAY_NIGNT, IR };
 ENUM_FLAGS(EventType)
 ENUM_FLAGS(ActionType)

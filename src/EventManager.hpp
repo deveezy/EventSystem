@@ -18,6 +18,7 @@ public:
 public:
   /** Push to the queue **/
   void Push(Flags<EventType> _event_type);
+  std::shared_ptr<Event> CreateEvent(ActionType _action_type);
   void Bind(Flags<EventType> _event_type, std::shared_ptr<Event> _event);  // Call from UI.
   void Unbind(uint32_t _id, Flags<EventType> _event_type);                 // Call from UI.
   void Exclude(uint32_t _id, Flags<EventType> _event_type);

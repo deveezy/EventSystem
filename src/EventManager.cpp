@@ -4,9 +4,12 @@
 
 #include <algorithm>
 #include <iostream>
+#include <memory>
 #include <utility>
 
+#include "Event.hpp"
 #include "events/DayNightEvent.hpp"
+#include "events/ResponseEvent.hpp"
 
 // TODO: fake DB.
 static uint32_t id_counter = 3;
@@ -19,6 +22,17 @@ EventManager::EventManager() : events {20} {
 EventManager::~EventManager() = default;
 
 void EventManager::Push(Flags<EventType> _event_type) { events.TryPush(_event_type); }
+
+std::shared_ptr<Event> EventManager::CreateEvent(ActionType _action_type) {
+  std::shared_ptr<Event> event = nullptr;
+  switch (_action_type) {
+    case ActionType::DAY_NIGNT: event = std::make_shared<DayNightEvent>(); break;
+    case ActionType::RESPONSE: event = std::make_shared<ResponseEvent>(); break;
+    // TODO: add other types
+    default: break;
+  }
+  return event;
+}
 
 void EventManager::Bind(Flags<EventType> _event_type, std::shared_ptr<Event> _event) {
   _event->SetEventType(_event_type);
