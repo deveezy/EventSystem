@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-DayNightEvent::DayNightEvent() : Event {ActionType::DAY_NIGNT, "DAYNIGHT"} {}
+// DayNightEvent::DayNightEvent() : Event {ActionType::DAY_NIGNT, "DAYNIGHT"} {}
 
 DayNightEvent::DayNightEvent(Mode _mode)
     : Event {ActionType::DAY_NIGNT, "DAYNIGHT"}

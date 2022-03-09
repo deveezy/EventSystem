@@ -6,7 +6,7 @@ public:
   enum class Mode { DAY = 1, NIGHT };
 
 public:
-  DayNightEvent();
+  // DayNightEvent();
   DayNightEvent(Mode _mode);
   // TODO: pass parameters to form rules of daynight toggling.
 public:
