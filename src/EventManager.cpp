@@ -22,7 +22,7 @@ void EventManager::Push(Flags<EventType> _event_type) { events.TryPush(_event_ty
 
 void EventManager::Bind(Flags<EventType> _event_type, std::shared_ptr<Event> _event) {
   _event->SetEventType(_event_type);
-  event_actions.emplace(id_counter, std::move(_event));
+  event_actions.emplace(id_counter, _event);
   ++id_counter;
 }
 
