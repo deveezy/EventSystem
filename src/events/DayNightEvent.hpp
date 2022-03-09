@@ -3,8 +3,19 @@
 
 class DayNightEvent : public Event {
 public:
-	DayNightEvent();
-	// TODO: pass parameters to form rules of daynight toggling.
+  enum class Mode { DAY = 1, NIGHT };
+
 public:
-	void Execute() override;
+  DayNightEvent();
+  DayNightEvent(Mode _mode);
+  // TODO: pass parameters to form rules of daynight toggling.
+public:
+  void Execute() override;
+
+public:
+	void SetMode(Mode _mode);
+	Mode GetMode() const;
+
+private:
+  Mode mode;
 };
