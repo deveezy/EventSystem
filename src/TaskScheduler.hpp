@@ -1,8 +1,9 @@
 #pragma once
 
 #include <ctime>
+#include <map>
 #include <memory>
-#include <unordered_map>
+
 #include "tasks/Task.hpp"
 
 class TaskScheduler {
@@ -15,7 +16,9 @@ public:
   TaskScheduler &operator=(TaskScheduler &&) noexcept = default;
 
 public:
+  void Push(Trigger _trigger, std::shared_ptr<Task> _task);
+  int32_t Acquire(Trigger _trigger); // return bounded id
 
 private:
-  std::unordered_map<uint32_t, std::shared_ptr<Task>> tasks;
+  std::multimap<Trigger, std::shared_ptr<Task>> tasks;
 };

@@ -7,8 +7,8 @@
 #include <memory>
 #include <utility>
 
-#include "events/Event.hpp"
 #include "events/DayNightEvent.hpp"
+#include "events/Event.hpp"
 #include "events/ResponseEvent.hpp"
 
 // TODO: fake DB.
@@ -21,56 +21,53 @@ EventManager::EventManager() : events {20} {
 
 EventManager::~EventManager() = default;
 
-void EventManager::Push(Flags<TriggerType> _event_type) { events.TryPush(_event_type); }
-
-std::shared_ptr<Event> EventManager::CreateEvent(ActionType _action_type) {
-  std::shared_ptr<Event> event = nullptr;
-  switch (_action_type) {
-    case ActionType::DAY_NIGNT: event = std::make_shared<DayNightEvent>(); break;
-    case ActionType::RESPONSE: event = std::make_shared<ResponseEvent>(); break;
-    // TODO: add other types
-    default: break;
-  }
-  return event;
+void EventManager::CreateActionDay(std::string _name, bool _ir, bool _wb) {
+  // TODO: save to DayReactions table
 }
 
-void EventManager::Bind(Flags<TriggerType> _event_type, std::shared_ptr<Event> _event) {
-  _event->SetTriggerType(_event_type);
-  event_actions.emplace(id_counter, _event);
-  ++id_counter;
+void EventManager::CreateActionNight(std::string _name, bool _ir, bool _wb) {
+  // TODO: save to NightReactions table
 }
 
-void EventManager::Unbind(uint32_t _id, Flags<TriggerType> _event_type) { event_actions.erase(_id); }
+void EventManager::Bind(Trigger _trigger, Action _action, int32_t _action_id) {
+  // TODO: save to bounded table in DB (join).
+}
 
-void EventManager::Exclude(uint32_t _id, Flags<TriggerType> _event_type) {
-  for (auto it = event_actions.begin(); it != event_actions.end();) {
-    if (it->first == _id) {
-      auto existed = it->second->GetTriggerType();
-      existed &= (~_event_type);
-      if (!existed) {
-        it = event_actions.erase(it);
-        continue;
-      } else {
-        it->second->SetTriggerType(existed);
-      }
-    }
-    ++it;
+void EventManager::Unbind(int32_t _id) {
+  // TODO: remove from DB and from map if exists.
+}
+
+void EventManager::Exclude(int32_t _id, Trigger _trigger) {
+  // TODO: Exclude/delete _trigger from FindTriggerById(_id).
+}
+
+void EventManager::EnableTrigger(int32_t _id, bool _enable) {
+  // TODO: push to event_actions and write active to DB (table bounded).
+  // TODO: scheduler.Push Task. Формируем Task с помощью, которые тащим из БД (shit happens).
+  // scheduler.Push(trigger, task);
+}
+
+void EventManager::Schedule(int32_t _id, SchedType _sched_type, uint64_t _begin, uint64_t _end) {
+  // TODO: Save to DB.
+}
+
+void EventManager::Push(Trigger _trigger) {
+  // TODO: вызвать метод из scheduler, который будет проверять,
+  // есть ли сейчас в планах такой триггер.
+  const auto bounded_id = scheduler.Acquire(_trigger);
+  if (bounded_id < 0) {
+    /// INFO: event not scheduled.
+    return;
   }
+  events.TryPush(bounded_id);
 }
 
 void EventManager::processEvents() {
-  while (true) {
-    TriggerType event_type;
+  while (true) { // while (_is_running)
+    int32_t bounded_id;
     std::cout << "Wait for event...\n";
-    events.WaitAndPop(event_type);  // block
+    events.WaitAndPop(bounded_id);  // block
     std::cout << "New event just arrived\n";
-
-    for (const auto &it : event_actions) {
-      if (it.second->GetTriggerType() & event_type) it.second->Execute();
-    }
+    event_actions[bounded_id]->Execute();
   }
-}
-
-void EventManager::initEvents() {
-  // TODO: Get values from DB and push to event_actions map.
 }

@@ -3,7 +3,7 @@
 #include <iostream>
 
 DayNightTask::DayNightTask(Mode _begin, Mode _end)
-    : Task {TriggerType::DAYNIGHT}
+    : Task {Trigger::DAYNIGHT}
     , begin {_begin}
     , end {_end} {}
 

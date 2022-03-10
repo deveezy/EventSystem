@@ -4,7 +4,9 @@
 #include <unordered_map>
 
 #include "ConcurrentQueue.hpp"
+#include "TaskScheduler.hpp"
 #include "events/Event.hpp"
+
 
 class EventManager {
 public:
@@ -16,21 +18,29 @@ public:
   EventManager &operator=(EventManager &&) noexcept = delete;
 
 public:
-  /** Push to the queue **/
-  void Push(Flags<TriggerType> _event_type);
-  std::shared_ptr<Event> CreateEvent(ActionType _action_type);
-  void Bind(Flags<TriggerType> _event_type, std::shared_ptr<Event> _event);  // Call from UI.
-  void Unbind(uint32_t _id, Flags<TriggerType> _event_type);                 // Call from UI.
-  void Exclude(uint32_t _id, Flags<TriggerType> _event_type);
+  /// Reactions
+  void CreateActionDay(std::string _name, bool _ir, bool _wb);
+  void CreateActionNight(std::string _name, bool _ir, bool _wb);
+  void CreateActionIR(std::string _name, uint32_t _seconds);
+  void CreateActionVideoRecord(std::string _name, uint32_t _seconds);
+  /// ---------------------------------------------------------
+
+  void Bind(Trigger _trigger, Action _action, int32_t _action_id);
+  void Unbind(int32_t _id);
+  void Exclude(int32_t _id, Trigger _trigger);
+  void EnableTrigger(int32_t _id, bool _enable);
+
+  void Schedule(int32_t _id, SchedType _sched_type, uint64_t _begin = 0, uint64_t _end = 0);
+
+  void Push(Trigger _trigger);
 
 private:
-  void processEvents();  // queue.pop blocked (producer/consumer)
-  void initEvents();
+  void processEvents();
 
 private:
-  // NOTE: mb key will be Task class with id and info about time
   std::unordered_map<uint32_t, std::shared_ptr<Event>> event_actions;
-  ConcurrentQueue<TriggerType> events;
+  ConcurrentQueue<int32_t> events;
+  TaskScheduler scheduler;
 
 private:
   std::future<void> handler;

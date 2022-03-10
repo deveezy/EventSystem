@@ -8,8 +8,8 @@
 class Event {
 public:
   Event() noexcept = default;
-  Event(ActionType _action_type, TriggerType _event_type);
-  Event(ActionType _type, std::string _name);
+  Event(Action _action, Trigger _event_type);
+  Event(Action _type, std::string _name);
   Event(const Event &) noexcept = default;
   Event(Event &&) noexcept      = default;
   Event &operator=(const Event &) noexcept = default;
@@ -22,13 +22,13 @@ public:
 public:
   void SetName(std::string _name);
   std::string GetName() const;
-  void SetActionType(ActionType _action_type);
-  Flags<ActionType> GetActionType() const;
-  void SetTriggerType(TriggerType _event_type);
-  Flags<TriggerType> GetTriggerType() const;
+  void SetActionType(Action _action);
+  Flags<Action> GetActionType() const;
+  void SetTriggerType(Trigger _event_type);
+  Flags<Trigger> GetTriggerType() const;
 
 protected:
   std::string name {};  // mb debug purpose
-  Flags<ActionType> action_type {};
-  Flags<TriggerType> event_type {};
+  Flags<Action> action_type {};
+  Flags<Trigger> event_type {};
 };
