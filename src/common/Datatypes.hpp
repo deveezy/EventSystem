@@ -10,7 +10,7 @@ enum class Trigger {
 
 enum class Action { RESPONSE = 1, DAY, NIGHT, IR, COUNT };
 
-enum class SchedType { ALWAYS = 1, WEEKLY, DAILY, WEEKDAYS, WEEKENDS, COUNT };
+enum class SchedType { ALWAYS = 1, ANNUALLY, MONTHLY, WEEKLY, DAILY, WEEKDAYS, WEEKENDS, COUNT };
 
 ENUM_FLAGS(Trigger)
 ENUM_FLAGS(Action)
