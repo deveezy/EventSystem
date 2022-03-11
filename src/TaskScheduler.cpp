@@ -1,5 +1,9 @@
 #include "TaskScheduler.hpp"
 
+TaskScheduler::TaskScheduler() = default;
+
+TaskScheduler::~TaskScheduler() = default;
+
 void TaskScheduler::Push(Trigger _trigger, std::shared_ptr<Task> _task) {
   tasks.emplace(_trigger, _task);
 }

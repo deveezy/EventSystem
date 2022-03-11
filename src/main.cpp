@@ -11,9 +11,8 @@
 #include <utility>
 
 #include "EventManager.hpp"
-#include "events/DayNightEvent.hpp"
 #include "events/Event.hpp"
-#include "events/ResponseEvent.hpp"
+#include "tools/DBManager.hpp"
 
 int main() {
   EventManager em;

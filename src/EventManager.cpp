@@ -7,9 +7,7 @@
 #include <memory>
 #include <utility>
 
-#include "events/DayNightEvent.hpp"
 #include "events/Event.hpp"
-#include "events/ResponseEvent.hpp"
 
 // TODO: fake DB.
 static uint32_t id_counter = 3;

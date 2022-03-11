@@ -4,6 +4,8 @@ project(EventSystem)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_EXTENSIONS ON)
 
+add_subdirectory(src/sqlite)
+
 add_executable(${CMAKE_PROJECT_NAME}
 	src/common/Flags.hpp
 	src/common/Datatypes.hpp
@@ -17,15 +19,16 @@ add_executable(${CMAKE_PROJECT_NAME}
 
 	src/events/Event.hpp
 	src/events/Event.cpp
-	src/events/DayNightEvent.hpp
-	src/events/DayNightEvent.cpp
-	src/events/ResponseEvent.hpp
-	src/events/ResponseEvent.cpp
 
 	src/tasks/Task.hpp
 	src/tasks/Task.cpp
-	src/tasks/DayNightTask.hpp
-	src/tasks/DayNightTask.cpp
+
+	src/tools/DBGenerator.cpp
+	src/tools/DBManager.cpp
+	src/tools/Macro.cpp
 
 	src/main.cpp
 )
+message(STATUS ${CMAKE_PROJECT_NAME})
+
+target_link_libraries(${CMAKE_PROJECT_NAME} sqlite)
