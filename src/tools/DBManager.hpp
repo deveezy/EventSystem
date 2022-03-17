@@ -31,7 +31,11 @@ private:
   sqlite3_stmt *prepare(const std::string &sql);
 
 private:
-  const std::string k_db_file_path {"/home/devpc/dev/projects/EventSystem/DB/nexus.db"};
+#ifdef _WIN32
+  const std::string k_db_file_path {"C:\\dev\\proj\\db\\test.db"};
+#else
+  const std::string k_db_file_path {"/home/devpc/dev/projects/EventSystem/DB/test.db"};
+#endif
   sqlite3 *m_db = nullptr;
 };
 }  // namespace db

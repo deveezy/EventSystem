@@ -1,6 +1,8 @@
 #include "DBManager.hpp"
 
-#include <unistd.h>
+#ifndef _WIN32
+  #include <unistd.h>
+#endif
 
 #include <fstream>
 #include <stdexcept>
@@ -36,7 +38,11 @@ inline sqlite3_stmt *DBManager::prepare(const std::string &_sql) {
 }
 
 void DBManager::ResetDatabase() {
+#ifdef _WIN32
+  _unlink(k_db_file_path.c_str());
+#else
   unlink(k_db_file_path.c_str());
+#endif
   if (sqlite3_open(k_db_file_path.c_str(), &m_db)) Throw(sqlite3_errmsg(m_db));
   const auto schheme_query = DBGenerator::GenerateScheme();
   char *error              = nullptr;
